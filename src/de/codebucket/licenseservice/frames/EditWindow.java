@@ -24,8 +24,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
-import com.ezware.dialog.task.TaskDialogs;
-
 import de.codebucket.licenseservice.ProductManager;
 import de.codebucket.licenseservice.ProductManager.License;
 import de.codebucket.licenseservice.ProductManager.Product;
@@ -48,7 +46,7 @@ public class EditWindow extends JFrame
 	private JTextField txtSerialKey, txtIdentifier;
 	private LoadingDialog load;
 	private Thread update;
-	private boolean reset;
+	private boolean reload;
 	
 
 	/**
@@ -65,7 +63,7 @@ public class EditWindow extends JFrame
 			public void windowClosing(WindowEvent arg0)
 			{
 				main.closeWindow(EditWindow.this);
-				if(EditWindow.this.reset == true)
+				if(EditWindow.this.reload == true)
 				{
 					main.reload();
 				}
@@ -149,7 +147,8 @@ public class EditWindow extends JFrame
 								} 
 								catch (IOException ex) 
 								{
-									TaskDialogs.showException(ex);
+									JOptionPane.showMessageDialog(EditWindow.this, "An error occurred while creating a new license file.", "MyLicenseControl v1.5.2", JOptionPane.ERROR_MESSAGE);
+									return;
 								}
 							}
 							
@@ -187,12 +186,12 @@ public class EditWindow extends JFrame
 			    	if(sucess == true)
 			    	{
 			    		JOptionPane.showMessageDialog(EditWindow.this, "License key '" + key + "' was sucessfully reset!", "MyLicenseControl v1.5.2", JOptionPane.INFORMATION_MESSAGE);
-			    		EditWindow.this.reset = true;
+			    		EditWindow.this.reload = true;
 			    		loadData();
 			    		return;
 			    	}
 			    	
-			    	EditWindow.this.reset = false;
+			    	EditWindow.this.reload = false;
 			    	main.closeWindow(EditWindow.this);
 					main.reload();
 			    }
@@ -209,7 +208,7 @@ public class EditWindow extends JFrame
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				main.closeWindow(EditWindow.this);
-				if(EditWindow.this.reset == true)
+				if(EditWindow.this.reload == true)
 				{
 					main.reload();
 				}

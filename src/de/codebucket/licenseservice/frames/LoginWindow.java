@@ -37,8 +37,6 @@ import de.codebucket.licenseservice.util.UniqueIdentifier.LoginData;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 
-import com.ezware.dialog.task.TaskDialogs;
-
 public class LoginWindow extends JFrame implements Runnable
 {
 	/**
@@ -135,7 +133,7 @@ public class LoginWindow extends JFrame implements Runnable
 			} 
 			catch (IOException ex)
 			{
-				TaskDialogs.showException(ex);
+				ex.printStackTrace();
 			}
 		}
 		else
@@ -149,7 +147,7 @@ public class LoginWindow extends JFrame implements Runnable
 			}
 			catch (IOException ex)
 			{
-				TaskDialogs.showException(ex);
+				ex.printStackTrace();
 			}
 		}
 		
@@ -378,7 +376,7 @@ public class LoginWindow extends JFrame implements Runnable
 							}
 							catch (Exception ex)
 							{
-								TaskDialogs.showException(ex);
+								ex.printStackTrace();
 							}
 						}
 					}

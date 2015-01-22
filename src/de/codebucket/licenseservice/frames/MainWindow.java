@@ -61,8 +61,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.UIManager;
 
-import com.ezware.dialog.task.TaskDialogs;
-
 public class MainWindow extends JFrame implements Runnable
 {
 	private static MainWindow instance;
@@ -788,7 +786,7 @@ public class MainWindow extends JFrame implements Runnable
 		}
 		catch (Exception ex)
 		{
-			TaskDialogs.showException(ex);
+			ex.printStackTrace();
 		}
 	}
 	

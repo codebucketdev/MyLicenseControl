@@ -7,8 +7,6 @@ import java.awt.Window;
 
 import javax.swing.UIManager;
 
-import com.ezware.dialog.task.TaskDialogs;
-
 public class FrameRunner 
 {
 	static
@@ -90,7 +88,7 @@ public class FrameRunner
 		        }
 		        catch (Exception ex)
 		        {
-		        	TaskDialogs.showException(ex);
+		        	ex.printStackTrace();
 		        }
 		    }
 	    });

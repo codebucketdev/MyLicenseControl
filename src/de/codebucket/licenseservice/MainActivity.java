@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import com.ezware.dialog.task.TaskDialogs;
-
 public class MainActivity 
 {
 	public static void main(String[] args) 
@@ -39,7 +37,7 @@ public class MainActivity
 		}
 		catch (Exception ex)
 		{
-			TaskDialogs.showException(ex);
+			ex.printStackTrace();
 		}
 	}
 	
