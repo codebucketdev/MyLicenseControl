@@ -9,9 +9,11 @@ import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 import de.codebucket.licenseservice.FrameRunner;
 import de.codebucket.licenseservice.MainActivity;
+import de.codebucket.licenseservice.util.FileManager;
 import de.codebucket.licenseservice.util.UpdateTask;
 import de.codebucket.licenseservice.util.UpdateTask.Download;
 
@@ -36,20 +38,12 @@ public class UpdaterWindow extends JFrame
 	private JPanel contentPane;
 	
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) 
-	{
-		FrameRunner.run(UpdaterWindow.class);
-	}
-	
-	/**
 	 * Create the frame.
 	 */
 	public UpdaterWindow()
 	{		
 		setResizable(false);
-		setTitle("MyLicenseControl Updater v1.5.2");
+		setTitle("MyLicenseControl Updater v1.5.3");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 450, 200);
 		contentPane = new JPanel();
@@ -58,7 +52,7 @@ public class UpdaterWindow extends JFrame
 		contentPane.setLayout(null);
 		
 		final JLabel lblStatus = new JLabel();
-		lblStatus.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblStatus.setFont(new Font(UIManager.getFont("Panel.font").getName(), UIManager.getFont("Panel.font").getStyle(), 16));
 		lblStatus.setIcon(new ImageIcon(UpdaterWindow.class.getResource("/de/codebucket/licenseservice/resources/gif_load.gif")));
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatus.setBounds(12, 12, 420, 80);
@@ -66,7 +60,7 @@ public class UpdaterWindow extends JFrame
 		
 		final JLabel lblDetails = new JLabel();
 		lblDetails.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDetails.setFont(new Font("Dialog", Font.BOLD, 12));
+		lblDetails.setFont(new Font(UIManager.getFont("FileChooser.listFont").getName(), UIManager.getFont("FileChooser.listFont").getStyle(), 12));
 		lblDetails.setBounds(12, 104, 420, 17);
 		contentPane.add(lblDetails);
 		setVisible(true);
@@ -108,6 +102,7 @@ public class UpdaterWindow extends JFrame
 							dispose();
 							return;
 						}
+						
 						System.exit(1);
 					}
 				}).start();
@@ -118,7 +113,7 @@ public class UpdaterWindow extends JFrame
 		FrameRunner.centerWindow(this);
 		
 		progressBar.setIndeterminate(true);
-		lblStatus.setText("Checking for new updates...");
+		lblStatus.setText(" Checking for new updates...");
 		lblDetails.setText("Loading data from latest repository on Github...");
 		new UpdateTask(UUID.randomUUID(), "https://raw.githubusercontent.com/codebucketdev/MyLicenseControl/master/src/de/codebucket/licenseservice/resources/version.json", UpdateTask.CURRENT_UPDATE) 
 		{
@@ -132,89 +127,104 @@ public class UpdaterWindow extends JFrame
 				
 				if(update == null)
 				{
-					lblStatus.setIcon(null);
-					lblStatus.setText("An error occurred while checking for new updates!");
+					lblStatus.setText(" An error occurred while checking for new updates!");
+					lblStatus.setIcon(new ImageIcon(UpdaterWindow.class.getResource("/de/codebucket/licenseservice/resources/icon_delete.png")));
 					lblDetails.setText("Nothing has been changed. You can close this window.");
 					setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					
 					progressBar.setIndeterminate(false);
-					JOptionPane.showMessageDialog(null, "An error occurred while checking for new updates.", "MyLicenseControl Updater v1.5.2", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(UpdaterWindow.this, "An error occurred while checking for new updates.", "MyLicenseControl Updater v1.5.3", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				
 				if(update.getName().equals(getCurrent().getName()))
 				{
-					if(update.getVersion().equalsIgnoreCase(getCurrent().getVersion()))
+					if(!Update.compareVersions(getCurrent().getVersion(), update.getVersion()))
 					{
-						lblStatus.setIcon(null);
-						lblStatus.setText("No Update found! You have already the newest version.");
+						lblStatus.setText(" No update found! You have already the newest version.");
+						lblStatus.setIcon(new ImageIcon(UpdaterWindow.class.getResource("/de/codebucket/licenseservice/resources/icon_yes.png")));
 						lblDetails.setText("Nothing has been changed. You can close this window.");
 						setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						
 						progressBar.setIndeterminate(false);
-						JOptionPane.showMessageDialog(null, "No Update found! You have already the newest version.", "MyLicenseControl Updater v1.5.2", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(UpdaterWindow.this, "No update found! You have already the newest version.", "MyLicenseControl Updater v1.5.3", JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
 					
 					progressBar.setIndeterminate(false);
-					lblStatus.setText("Waiting for user response...");
-					lblDetails.setText("New Update found! Update version: " + update.getVersion());
-					int result = JOptionPane.showConfirmDialog(null, "New Update found!\nUpdate version: " + update.getVersion() + "\nYour version: " + getCurrent().getVersion() + "\n\nDo you want to download the new Update?", "MyLicenseControl Updater v1.5.2", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+					lblStatus.setText(" Waiting for user response...");
+					lblDetails.setText("New update found! Update version: " + update.getVersion());
+					int result = JOptionPane.showConfirmDialog(UpdaterWindow.this, "<html><b>New update found!</b></html>\nUpdate version: " + update.getVersion() + "\nYour version: " + getCurrent().getVersion() + "\n\nDo you want to download the new update?", "MyLicenseControl Updater v1.5.3", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if(result == JOptionPane.YES_OPTION)
 					{
 						try 
 						{
-							download = new Download(new URL(update.getUpdate()));
+							File target = File.createTempFile("download_", "");
+							if(target.exists())
+							{
+								target.deleteOnExit();
+							}
+							
+							download = new Download(new URL(update.getUpdate()), target);
 							new Thread(new Runnable() 
 							{
+								long start = System.nanoTime();
+								
 								public void run() 
 								{
-									lblStatus.setText("Downloading update... Please wait.");
+									lblStatus.setText(" Downloading update... Please wait.");
+									lblStatus.setIcon(new ImageIcon(UpdaterWindow.class.getResource("/de/codebucket/licenseservice/resources/icon_download.png")));
 									while(download.getStatus() == Download.DOWNLOADING)
 									{
-										progressBar.setValue((int) download.getProgress());
-										int downloaded = (download.getDownloaded() / 1024);
-										int size = (download.getSize() / 1024);
+										if(download.getDownloaded() <= 0)
+										{
+											start = System.nanoTime();
+										}
 										
-										lblDetails.setText("Downloading file: " + downloaded + "kB /" + size + "kB (" + (int) download.getProgress() + "%)");
+										progressBar.setValue((int) download.getProgress());
+										String downloaded = humanReadableByteCount(download.getDownloaded(), true);
+										String size = humanReadableByteCount(download.getSize(), true);
+										String speed = humanReadableByteCount(getDownloadSpeed(), false);
+										lblDetails.setText("Downloading file: " + downloaded + " /" + size + " (" + speed + "/s)");
 									}
 									
-									String status = null;
 									switch(download.getStatus())
 									{
 										case Download.COMPLETE:
-											status = "Finished! Update sucessfully downloaded.";
+											lblStatus.setText(" Finished! Update sucessfully downloaded.");
+											lblStatus.setIcon(new ImageIcon(UpdaterWindow.class.getResource("/de/codebucket/licenseservice/resources/icon_yes.png")));
 											break;
 										
 										case Download.ERROR:
-											status = "An error occurred while trying to download a new update!";
+											lblStatus.setText(" An error occurred while trying to download a new update!");
+											lblStatus.setIcon(new ImageIcon(UpdaterWindow.class.getResource("/de/codebucket/licenseservice/resources/icon_delete.png")));
 											break;
 										
 										case Download.PAUSED:
-											status = "The update has been paused, no network available.";
+											lblStatus.setText(" The update has been paused, no network available.");
+											lblStatus.setIcon(new ImageIcon(UpdaterWindow.class.getResource("/de/codebucket/licenseservice/resources/icon_warning.png")));
 											break;
 											
 										default:
-											status = "Update has been cancelled by user.";
+											lblStatus.setText("Update has been cancelled by user.");
+											lblStatus.setIcon(null);
 											break;
 									}
 									
 									if(download.getStatus() != Download.COMPLETE)
 									{
-										lblStatus.setIcon(null);
-										lblStatus.setText(status);
 										lblDetails.setText("Nothing has been changed. You can close this window.");
 										setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 										
 										File file = new File(download.getFileName());
 										if(file.exists())
 										{
-											file.delete();
+											file.deleteOnExit();
 										}
 										
 										if(download.getStatus() == Download.ERROR)
 										{
-											JOptionPane.showMessageDialog(null, "An error occurred while trying to download a new update.", "MyLicenseControl Updater v1.5.2", JOptionPane.ERROR_MESSAGE);
+											JOptionPane.showMessageDialog(UpdaterWindow.this, "An error occurred while trying to download a new update.", "MyLicenseControl Updater v1.5.3", JOptionPane.ERROR_MESSAGE);
 										}
 										
 										return;
@@ -224,18 +234,19 @@ public class UpdaterWindow extends JFrame
 									System.gc();
 									
 									File jar = getJarFile();
-									if(jar.exists())
+									if(jar != null && jar.exists())
 									{
-										jar.deleteOnExit();
+										synchronized(this) 
+										{
+											FileManager.writeBytes(jar, FileManager.readBytes(download.getTarget()));
+										}
 									}
-								
-									lblStatus.setIcon(null);
-									lblStatus.setText("Finished! Update sucessfully downloaded.");
-									lblDetails.setText("File sucessfully downloaded!");
+									
+									lblDetails.setText("File sucessfully downloaded! (" + humanReadableByteCount(getDownloadSpeed(), true) + "/s)");
 									setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 									progressBar.setValue(100);
 									
-									int result = JOptionPane.showConfirmDialog(null, "Update sucessfully downloaded!\nTo apply the changes, this program needs to be restarted.\nDo you like to restart this application?", "MyLicenseControl Updater v1.5.2", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+									int result = JOptionPane.showConfirmDialog(UpdaterWindow.this, "<html><b>Update sucessfully downloaded!</b></html>\nTo apply the changes, this program needs to be restarted.\nDo you like to restart this application?", "MyLicenseControl Updater v1.5.3", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 									if(result == JOptionPane.YES_OPTION)
 									{
 										try
@@ -248,6 +259,12 @@ public class UpdaterWindow extends JFrame
 										}
 									}
 								}
+								
+								public long getDownloadSpeed()
+								{
+									return (long) ((Download.NANOS_PER_SECOND / Download.BYTES_PER_MIB * download.getDownloaded() / (System.nanoTime() - start + 1)) * 1024 * 1024);
+								}
+								
 							}).start();
 						}
 						catch (Exception ex) {}
@@ -262,6 +279,17 @@ public class UpdaterWindow extends JFrame
 				}
 			}
 		}.check();
+		
+		this.validate();
+	}
+	
+	private String humanReadableByteCount(long bytes, boolean si) 
+	{
+	    int unit = si ? 1000 : 1024;
+	    if (bytes < unit) return bytes + " B";
+	    int exp = (int) (Math.log(bytes) / Math.log(unit));
+	    String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+	    return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
 	}
 	
 	public void restartApplication() throws IOException, URISyntaxException 

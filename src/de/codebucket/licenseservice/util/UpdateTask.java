@@ -1,5 +1,6 @@
 package de.codebucket.licenseservice.util;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
@@ -20,7 +21,7 @@ public abstract class UpdateTask
 	private String url;
 	private Update current;
 	
-	public static final Update CURRENT_UPDATE = new Update("MyLicenseControl", "v1.5.2", "https://github.com/codebucketdev/MyLicenseControl/releases/download/v1.5.2-release/MyLicenseControl-v1.5.2.jar");
+	public static final Update CURRENT_UPDATE = new Update("MyLicenseControl", "v1.5.3", "https://github.com/codebucketdev/MyLicenseControl/releases/download/v1.5.3-release/MyLicenseControl-v1.5.3.jar");
 	
 	public UpdateTask(UUID key, String url, Update current)
 	{
@@ -96,6 +97,50 @@ public abstract class UpdateTask
 		{
 			return update;
 		}
+		
+		public static boolean compareVersions(String version, String update)
+		{
+			int[] x = getVersionNumbers(version), y = getVersionNumbers(update);
+			for(int i = 0; i < (x.length > y.length ? x.length : y.length); i++)
+			{
+				if(!(i >= x.length || i >= y.length))
+				{
+					if(x[i] < y[i])
+					{
+						return true;
+					}
+				}
+			}
+			
+			return (x.length < y.length);
+		}
+		
+		private static int[] getVersionNumbers(String version)
+		{
+			char[] allowed = "0123456789.".toCharArray();
+			StringBuilder builder = new StringBuilder();
+			for(int i = 0; i < version.length(); i++)
+			{
+				char c = version.charAt(i);
+				for(char ch : allowed) 
+				{
+					if(ch == c) 
+					{
+						builder.append(c);
+					}
+				}
+			}
+			
+			String[] split = builder.toString().split("\\.");
+			
+			int[] numbers = new int[split.length];
+			for(int i = 0; i < split.length; i++)
+			{
+				numbers[i] = Integer.parseInt(split[i]);
+			}
+			
+			return numbers;
+		}
 	}
 	
 	public static class Download extends Observable implements Runnable
@@ -113,21 +158,32 @@ public abstract class UpdateTask
 		public static final int COMPLETE = 2;
 		public static final int CANCELLED = 3;
 		public static final int ERROR = 4;
+		
+		public static final double NANOS_PER_SECOND = 1000000000.0;
+		public static final double BYTES_PER_MIB = 1024 * 1024;
 
 		private URL url; // download URL
 		private int size; // size of download in bytes
 		private int downloaded; // number of bytes downloaded
 		private int status; // current status of download
+		
+		private File target;
 
-		// Constructor for Download.
 		public Download(URL url)
 		{
+			this(url, null);
+		}
+		
+		// Constructor for Download.
+		public Download(URL url, File target)
+		{
 		    this.url = url;
-		    size = -1;
-		    downloaded = 0;
-		    status = DOWNLOADING;
+		    this.size = -1;		    
+		    this.target = target;
 
 		    // Begin the download.
+		    status = DOWNLOADING;
+		    downloaded = 0;
 		    download();
 		}
 
@@ -195,16 +251,16 @@ public abstract class UpdateTask
 			new Thread(this).start();
 		}
 
-		// Get file name portion of URL.
-		private String getFileName(URL url) 
+		// Get file name portion of URL or absolute path of target.
+		public File getTarget() 
 		{
-		    return url.getFile().substring(url.getFile().lastIndexOf('/') + 1);
+		    return (target != null ? new File(target.getAbsolutePath()) : new File(url.getFile().substring(url.getFile().lastIndexOf('/') + 1)));
 		}
 		
 		// Get file name portion of Download.
 		public String getFileName() 
 		{
-		    return getFileName(url);
+		    return getTarget().getName();
 		}
 
 		// Download file.
@@ -246,7 +302,7 @@ public abstract class UpdateTask
 		        }
 
 		        // Open file and seek to the end of it.
-		        file = new RandomAccessFile(getFileName(url), "rw");
+		        file = new RandomAccessFile(getTarget().getAbsolutePath(), "rw");
 		        file.seek(downloaded);
 
 		        stream = connection.getInputStream();

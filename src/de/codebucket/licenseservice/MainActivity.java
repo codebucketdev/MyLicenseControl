@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
+
+import javax.swing.JOptionPane;
+
+import de.codebucket.licenseservice.frames.UpdaterWindow;
+import de.codebucket.licenseservice.util.UpdateTask;
 
 public class MainActivity 
 {
@@ -39,6 +45,43 @@ public class MainActivity
 		{
 			ex.printStackTrace();
 		}
+		
+		new Thread("update")
+		{
+			@Override
+			public void run() 
+			{
+				try
+				{
+					Thread.sleep(3000L);
+				}
+				catch (InterruptedException ex) {}
+				
+				new UpdateTask(UUID.randomUUID(), "https://raw.githubusercontent.com/codebucketdev/MyLicenseControl/master/src/de/codebucket/licenseservice/resources/version.json", UpdateTask.CURRENT_UPDATE) 
+				{
+					@Override
+					public void updateSucess(Update update) 
+					{
+						if(update == null)
+						{
+							return;
+						}
+						
+						if(update.getName().equals(getCurrent().getName()))
+						{
+							if(Update.compareVersions(getCurrent().getVersion(), update.getVersion()))
+							{
+								int result = JOptionPane.showConfirmDialog(null, "A new update is available! Would you like to update now?", "MyLicenseControl v1.5.3", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+								if(result == JOptionPane.YES_OPTION)
+								{
+									FrameRunner.run(UpdaterWindow.class);
+								}
+							}
+						}
+					}
+				}.check();
+			}
+		}.start();
 	}
 	
 	private static boolean isSet(String param, String[] args)

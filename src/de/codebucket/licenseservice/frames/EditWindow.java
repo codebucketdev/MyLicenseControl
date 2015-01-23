@@ -75,7 +75,7 @@ public class EditWindow extends JFrame
 		this.uuid = uuid;
 		
 		setResizable(false);
-		setTitle("Edit License - MyLicenseControl v1.5.2");
+		setTitle("Edit License - MyLicenseControl v1.5.3");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 337, 220);
 		contentPane = new JPanel();
@@ -147,7 +147,7 @@ public class EditWindow extends JFrame
 								} 
 								catch (IOException ex) 
 								{
-									JOptionPane.showMessageDialog(EditWindow.this, "An error occurred while creating a new license file.", "MyLicenseControl v1.5.2", JOptionPane.ERROR_MESSAGE);
+									JOptionPane.showMessageDialog(EditWindow.this, "An error occurred while creating a new license file.", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
 									return;
 								}
 							}
@@ -156,7 +156,7 @@ public class EditWindow extends JFrame
 							LicenseKey license = new LicenseKey(product.getName(), main.getClient().getAddress().toString(), txtSerialKey.getText());
 							FileLicense.writeLicense(license, file);
 							
-							JOptionPane.showMessageDialog(EditWindow.this, "License file sucessfully created. (" + file.getAbsolutePath() + ")", "MyLicenseControl v1.5.2", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(EditWindow.this, "License file sucessfully created. (" + file.getAbsolutePath() + ")", "MyLicenseControl v1.5.3", JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
 				}.start();
@@ -171,7 +171,7 @@ public class EditWindow extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				int action = JOptionPane.showConfirmDialog(EditWindow.this, "Do you really want to reset this license?", "MyLicenseControl v1.5.2", JOptionPane.YES_NO_OPTION);  
+				int action = JOptionPane.showConfirmDialog(EditWindow.this, "Do you really want to reset this license?", "MyLicenseControl v1.5.3", JOptionPane.YES_NO_OPTION);  
 			    if(action == JOptionPane.YES_OPTION)
 			    {
 			    	boolean sucess = LicenseHandler.resetUniqueId(new SerialKey() 
@@ -185,7 +185,7 @@ public class EditWindow extends JFrame
 			    	
 			    	if(sucess == true)
 			    	{
-			    		JOptionPane.showMessageDialog(EditWindow.this, "License key '" + key + "' was sucessfully reset!", "MyLicenseControl v1.5.2", JOptionPane.INFORMATION_MESSAGE);
+			    		JOptionPane.showMessageDialog(EditWindow.this, "License key '" + key + "' was sucessfully reset!", "MyLicenseControl v1.5.3", JOptionPane.INFORMATION_MESSAGE);
 			    		EditWindow.this.reload = true;
 			    		loadData();
 			    		return;
@@ -269,7 +269,7 @@ public class EditWindow extends JFrame
 				
 				if(!LicenseHandler.existsLicense(product, key))
 				{
-					JOptionPane.showMessageDialog(EditWindow.this, "License for product '" + product.getName() + "' with license key '" + key.getKey() + "' not exists.", "MyLicenseControl v1.5.2", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(EditWindow.this, "License for product '" + product.getName() + "' with license key '" + key.getKey() + "' not exists.", "MyLicenseControl v1.5.3", JOptionPane.WARNING_MESSAGE);
 					MainWindow.getMain().closeWindow(EditWindow.this);
 					load.close();
 					return;

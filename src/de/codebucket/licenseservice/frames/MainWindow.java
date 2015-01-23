@@ -98,7 +98,7 @@ public class MainWindow extends JFrame implements Runnable
 	{
 		this.start();
 		
-		setTitle(client.getUsername() + "@" + client.getAddress().getHostAddress() + " - MyLicenseControl v1.5.2");
+		setTitle(client.getUsername() + "@" + client.getAddress().getHostAddress() + " - MyLicenseControl v1.5.3");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 942, 605);
 		contentPane = new JPanel();
@@ -264,7 +264,7 @@ public class MainWindow extends JFrame implements Runnable
 				ListSelectionModel s = tblLicenses.getSelectionModel();
 				if(!s.isSelectionEmpty())
 				{
-					int action = JOptionPane.showConfirmDialog(MainWindow.this, "Do you really want to remove this license?", "MyLicenseControl v1.5.2", JOptionPane.YES_NO_OPTION);  
+					int action = JOptionPane.showConfirmDialog(MainWindow.this, "Do you really want to remove this license?", "MyLicenseControl v1.5.3", JOptionPane.YES_NO_OPTION);  
 				    if(action == JOptionPane.YES_OPTION)
 				    {
 						final int r = tblLicenses.getSelectedRow();
@@ -503,7 +503,7 @@ public class MainWindow extends JFrame implements Runnable
 				ListSelectionModel s = tblLicenses.getSelectionModel();
 				if(!s.isSelectionEmpty())
 				{
-					int action = JOptionPane.showConfirmDialog(MainWindow.this, "Do you really want to remove this license?", "MyLicenseControl v1.5.2", JOptionPane.YES_NO_OPTION);  
+					int action = JOptionPane.showConfirmDialog(MainWindow.this, "Do you really want to remove this license?", "MyLicenseControl v1.5.3", JOptionPane.YES_NO_OPTION);  
 				    if(action == JOptionPane.YES_OPTION)
 				    {
 				    	final int r = tblLicenses.getSelectedRow();
@@ -530,7 +530,7 @@ public class MainWindow extends JFrame implements Runnable
 		{
 			public void windowClosing(WindowEvent e) 
 			{
-				int action = JOptionPane.showConfirmDialog(MainWindow.this, "Do you really want to disconnect from the server?", "MyLicenseControl v1.5.2", JOptionPane.YES_NO_OPTION);  
+				int action = JOptionPane.showConfirmDialog(MainWindow.this, "Do you really want to disconnect from the server?", "MyLicenseControl v1.5.3", JOptionPane.YES_NO_OPTION);  
 			    if(action == JOptionPane.YES_OPTION)
 			    {
 			    	MainWindow.this.disconnect();
@@ -887,7 +887,7 @@ public class MainWindow extends JFrame implements Runnable
 	
 	public void disconnect()
 	{
-		setTitle("Not connected - MyLicenseControl v1.5.2");
+		setTitle("Not connected - MyLicenseControl v1.5.3");
 		try 
 		{
 			Thread.sleep(150L);
@@ -902,7 +902,7 @@ public class MainWindow extends JFrame implements Runnable
 	
 	public void timeout(String reason) 
 	{
-		setTitle("Not connected - MyLicenseControl v1.5.2");
+		setTitle("Not connected - MyLicenseControl v1.5.3");
 		try 
 		{
 			Thread.sleep(150L);
@@ -911,7 +911,7 @@ public class MainWindow extends JFrame implements Runnable
 		
 		running = false;	
 		status("icon_connect_no.png", reason);
-		JOptionPane.showMessageDialog(this, "Lost connection to server: \n" + reason, "MyLicenseControl v1.5.2", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Lost connection to server: \n" + reason, "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
 		this.close();
 	}
 	

@@ -71,7 +71,7 @@ public class CreateWindow extends JFrame
 			}
 		});
 		
-		setTitle("Create License - MyLicenseControl v1.5.2");
+		setTitle("Create License - MyLicenseControl v1.5.3");
 		setType(Type.POPUP);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 335, 200);
@@ -131,7 +131,7 @@ public class CreateWindow extends JFrame
 						}
 						catch (QueryServiceException ex)
 						{
-							JOptionPane.showMessageDialog(CreateWindow.this, "An internal error has occoured while executing the process! \n" + ex.getMessage(), "MyLicenseControl v1.5.2", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(CreateWindow.this, "An internal error has occoured while executing the process! \n" + ex.getMessage(), "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
 							main.closeWindow(CreateWindow.this);
 							return;
 						}
