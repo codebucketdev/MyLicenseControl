@@ -37,6 +37,20 @@ public class MainActivity
 			return;
 		}
 		
+		if(isSet("-updater", args))
+		{
+			try
+			{
+				FrameRunner.run(de.codebucket.licenseservice.frames.UpdaterWindow.class);
+			}
+			catch (Exception ex)
+			{
+				throw new RuntimeException(ex);
+			}
+			
+			return;
+		}
+		
 		try
 		{
 			FrameRunner.run(de.codebucket.licenseservice.frames.LoginWindow.class, new Class<?>[]{ String[].class }, new Object[]{ args });
@@ -71,7 +85,7 @@ public class MainActivity
 						{
 							if(Update.compareVersions(getCurrent().getVersion(), update.getVersion()))
 							{
-								int result = JOptionPane.showConfirmDialog(null, "A new update is available! Would you like to update now?", "MyLicenseControl v1.5.3", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+								int result = JOptionPane.showConfirmDialog(null, "A new update is available! Would you like to update now?", "MyLicenseControl v1.5.4", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 								if(result == JOptionPane.YES_OPTION)
 								{
 									FrameRunner.run(UpdaterWindow.class);

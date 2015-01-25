@@ -61,7 +61,7 @@ public class RegisterWindow extends JFrame
 		this.key = key;
 		
 		setResizable(false);
-		setTitle("Register Product - MyLicenseControl v1.5.3");
+		setTitle("Register Product - MyLicenseControl v1.5.4");
 		setBounds(100, 100, 410, 220);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -128,7 +128,7 @@ public class RegisterWindow extends JFrame
 				ResponseCode response = LicenseHandler.registerProduct(product, key, uuid);
 				if(response == null)
 				{
-					JOptionPane.showMessageDialog(RegisterWindow.this, "An internal error has occoured while executing the process!", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(RegisterWindow.this, "An internal error has occoured while executing the process!", "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 					main.closeWindow(RegisterWindow.this);
 					main.reload();
 					return;
@@ -136,27 +136,27 @@ public class RegisterWindow extends JFrame
 				
 				if(response == ResponseCode.E001)
 				{
-					JOptionPane.showMessageDialog(RegisterWindow.this, "Product '" + product.getName() + "' has been registered with the key '" + key.getKey() + "'!", "MyLicenseControl v1.5.3", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(RegisterWindow.this, "Product '" + product.getName() + "' has been registered with the key '" + key.getKey() + "'!", "MyLicenseControl v1.5.4", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else if(response == ResponseCode.E333)
 				{
-					JOptionPane.showMessageDialog(RegisterWindow.this, "Product '" + product.getName() + "' is authenticated with key '" + key.getKey() + "'.", "MyLicenseControl v1.5.3", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(RegisterWindow.this, "Product '" + product.getName() + "' is authenticated with key '" + key.getKey() + "'.", "MyLicenseControl v1.5.4", JOptionPane.WARNING_MESSAGE);
 				}
 				else if(response == ResponseCode.E112)
 				{
-					JOptionPane.showMessageDialog(RegisterWindow.this, "Product '" + product.getName() + "' with license key '" + key.getKey() + "' already registered.", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(RegisterWindow.this, "Product '" + product.getName() + "' with license key '" + key.getKey() + "' already registered.", "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 				}
 				else if(response == ResponseCode.E111)
 				{
-					JOptionPane.showMessageDialog(RegisterWindow.this, "License for product '" + product.getName() + "' with license key '" + key.getKey() + "' not exists.", "MyLicenseControl v1.5.3", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(RegisterWindow.this, "License for product '" + product.getName() + "' with license key '" + key.getKey() + "' not exists.", "MyLicenseControl v1.5.4", JOptionPane.WARNING_MESSAGE);
 				}
 				else if(response == ResponseCode.E011)
 				{
-					JOptionPane.showMessageDialog(RegisterWindow.this, "Product '" + product.getName() + "' not exists!", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(RegisterWindow.this, "Product '" + product.getName() + "' not exists!", "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(RegisterWindow.this, "An internal error has occoured while executing the process!", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(RegisterWindow.this, "An internal error has occoured while executing the process!", "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				main.closeWindow(RegisterWindow.this);

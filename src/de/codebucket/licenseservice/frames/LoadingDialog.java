@@ -32,7 +32,7 @@ public class LoadingDialog extends JDialog
 		setVisible(false);	
 		setType(Type.POPUP);
 		setResizable(false);
-		setTitle("MyLicenseControl v1.5.3");
+		setTitle("MyLicenseControl v1.5.4");
 		setBounds(100, 100, 250, 100);
 		setLocationRelativeTo(c);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);

@@ -21,7 +21,7 @@ public abstract class UpdateTask
 	private String url;
 	private Update current;
 	
-	public static final Update CURRENT_UPDATE = new Update("MyLicenseControl", "v1.5.3", "https://github.com/codebucketdev/MyLicenseControl/releases/download/v1.5.3-release/MyLicenseControl-v1.5.3.jar");
+	public static final Update CURRENT_UPDATE = new Update("MyLicenseControl", "v1.5.4", "https://github.com/codebucketdev/MyLicenseControl/releases/download/v1.5.4-release/MyLicenseControl-v1.5.4.jar");
 	
 	public UpdateTask(UUID key, String url, Update current)
 	{
@@ -47,7 +47,7 @@ public abstract class UpdateTask
 					Update update = new Gson().fromJson(content, Update.class);
 					updateSucess(update);
 				}
-				catch (Exception e)
+				catch(Exception ex)
 				{
 					updateSucess(null);
 				}

@@ -49,7 +49,7 @@ public class ManagerWindow extends JFrame
 		});
 		
 		setResizable(false);
-		setTitle("Add Product - MyLicenseControl v1.5.3");
+		setTitle("Add Product - MyLicenseControl v1.5.4");
 		setBounds(100, 100, 305, 220);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -115,7 +115,7 @@ public class ManagerWindow extends JFrame
 				LinkedData response = ProductManager.addProduct(id, name, displayname);
 				if(response == null)
 				{
-					JOptionPane.showMessageDialog(ManagerWindow.this, "An internal error has occoured while executing the process!", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(ManagerWindow.this, "An internal error has occoured while executing the process!", "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 					main.closeWindow(ManagerWindow.this);
 					main.reload();
 					return;
@@ -123,13 +123,13 @@ public class ManagerWindow extends JFrame
 				
 				if(response.a() == Status.ERROR)
 				{
-					JOptionPane.showMessageDialog(ManagerWindow.this, response.b(), "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(ManagerWindow.this, response.b(), "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 					main.closeWindow(ManagerWindow.this);
 					main.reload();
 					return;
 				}
 				
-				JOptionPane.showMessageDialog(ManagerWindow.this, response.b(), "MyLicenseControl v1.5.3", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(ManagerWindow.this, response.b(), "MyLicenseControl v1.5.4", JOptionPane.INFORMATION_MESSAGE);
 				main.closeWindow(ManagerWindow.this);
 				main.reload();
 				return;

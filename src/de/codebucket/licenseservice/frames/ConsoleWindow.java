@@ -70,7 +70,7 @@ public class ConsoleWindow extends JFrame
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo((Component) main);
-		setTitle("Service console - MyLicenseControl v1.5.3");
+		setTitle("Service console - MyLicenseControl v1.5.4");
 		setSize(880, 550);
 		setAlwaysOnTop(false);
 		contentPane = new JPanel();

@@ -67,7 +67,7 @@ public class LoginWindow extends JFrame implements Runnable
 		
 		setType(Type.POPUP);
 		setResizable(false);
-		setTitle("MyLicenseControl v1.5.3");
+		setTitle("MyLicenseControl v1.5.4");
 		setSize(276, 365);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,7 +105,7 @@ public class LoginWindow extends JFrame implements Runnable
 				{
 					getToolkit().beep();
 					toggleButton(true);
-					JOptionPane.showMessageDialog(LoginWindow.this, "Could not connect to server " + client.getAddress().getHostAddress() + ":" + client.getPort() + "!", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(LoginWindow.this, "Could not connect to server " + client.getAddress().getHostAddress() + ":" + client.getPort() + "!", "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			}
@@ -118,7 +118,7 @@ public class LoginWindow extends JFrame implements Runnable
 		lblTitle.setBounds(10, 11, 249, 32);
 		contentPane.add(lblTitle);
 		
-		JLabel lblAbout = new JLabel("By Codebucket. Version 1.5.3");
+		JLabel lblAbout = new JLabel("By Codebucket. Version 1.5.4");
 		lblAbout.setFont(new Font(UIManager.getFont("Panel.font").getName(), UIManager.getFont("Panel.font").getStyle(), 11));
 		lblAbout.setBounds(12, 47, 247, 14);
 		contentPane.add(lblAbout);
@@ -276,7 +276,7 @@ public class LoginWindow extends JFrame implements Runnable
         {
         	connecting = false;
         	this.toggleButton(true);
-			JOptionPane.showMessageDialog(this, "Failed to connect to server " + client.getAddress().getHostAddress() + ":" + client.getPort() + "!", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Failed to connect to server " + client.getAddress().getHostAddress() + ":" + client.getPort() + "!", "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
         }
 	}
 	
@@ -341,7 +341,7 @@ public class LoginWindow extends JFrame implements Runnable
 									}	
 									else if(packet.getStatus() == Status.ERROR)
 									{
-										JOptionPane.showMessageDialog(LoginWindow.this, "Lost connection to server: \n" + packet.getArgs()[0], "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+										JOptionPane.showMessageDialog(LoginWindow.this, "Lost connection to server: \n" + packet.getArgs()[0], "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 									}
 									return;
 								}
@@ -360,7 +360,7 @@ public class LoginWindow extends JFrame implements Runnable
 		{
 			connecting = false;
 			this.toggleButton(true);
-			JOptionPane.showMessageDialog(this, "Could not connect to server " + client.getAddress().getHostAddress() + ":" + client.getPort() + "!", "MyLicenseControl v1.5.3", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Could not connect to server " + client.getAddress().getHostAddress() + ":" + client.getPort() + "!", "MyLicenseControl v1.5.4", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
