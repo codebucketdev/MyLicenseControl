@@ -10,9 +10,9 @@ import sun.misc.BASE64Encoder;
 
 public class PasswordUtils 
 {
-	private static SecretKey key = genetateKey();
+	private static SecretKey key = generateKey();
     
-    public static SecretKey genetateKey() 
+    public static SecretKey generateKey() 
     {
         try 
         {
